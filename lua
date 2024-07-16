@@ -705,30 +705,16 @@ function OrionLib:MakeWindow(WindowConfig)
 			TextTransparency = 1
 		})
 
-		local LoadSequenceText2 = SetProps(MakeElement("Label", "by Guerric", 14), {
-			Parent = Orion,
-			Size = UDim2.new(1, 0, 1, 0),
-			AnchorPoint = Vector2.new(0.5, 0.5),
-			Position = UDim2.new(0.5, 19, 0.5, 20),
-			TextXAlignment = Enum.TextXAlignment.Center,
-			Font = Enum.Font.GothamBold,
-			TextTransparency = 1,
-			TextSize = 15
-		})
-
-
 		TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0, Position = UDim2.new(0.5, 0, 0.5, 0)}):Play()
 		wait(0.8)
 		TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, -(LoadSequenceText.TextBounds.X/2), 0.5, 0)}):Play()
 		wait(0.3)
 		TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
-		TweenService:Create(LoadSequenceText2, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
 		wait(2)
 		TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 1}):Play()
 		MainWindow.Visible = true
 		LoadSequenceLogo:Destroy()
 		LoadSequenceText:Destroy()
-		LoadSequenceText2:Destroy()
 	end 
 
 	if WindowConfig.IntroEnabled then
@@ -1203,14 +1189,6 @@ function OrionLib:MakeWindow(WindowConfig)
 					end
 				end	
 
-				local function copyTable(original)
-					local copy = {}
-					for key, value in pairs(original) do
-						copy[key] = value
-					end
-					return copy
-				end
-
 				function Dropdown:Refresh(Options, Delete)
 					if Delete then
 						for _,v in pairs(Dropdown.Buttons) do
@@ -1219,13 +1197,9 @@ function OrionLib:MakeWindow(WindowConfig)
 						table.clear(Dropdown.Options)
 						table.clear(Dropdown.Buttons)
 					end
-					Dropdown.Options = copyTable(Options)
+					Dropdown.Options = Options
 					AddOptions(Dropdown.Options)
 				end  
-
-				function Dropdown:Title(Text)
-					DropdownFrame.F.Content.Text = Text
-				end
 
 				function Dropdown:Set(Value)
 					if not table.find(Dropdown.Options, Value) then
@@ -1397,8 +1371,6 @@ function OrionLib:MakeWindow(WindowConfig)
 				TextboxConfig.TextDisappear = TextboxConfig.TextDisappear or false
 				TextboxConfig.Callback = TextboxConfig.Callback or function() end
 
-				local Textbox = {Value = TextboxConfig.Default, Options = TextboxConfig.Options, Type = "Textbox"}
-				
 				local Click = SetProps(MakeElement("Button"), {
 					Size = UDim2.new(1, 0, 1, 0)
 				})
@@ -1440,10 +1412,6 @@ function OrionLib:MakeWindow(WindowConfig)
 					Click
 				}), "Second")
 
-				function Textbox:Title(Text)
-					TextboxFrame.Content.Text = Text
-				end
-
 				AddConnection(TextboxActual:GetPropertyChangedSignal("Text"), function()
 					--TextContainer.Size = UDim2.new(0, TextboxActual.TextBounds.X + 16, 0, 24)
 					TweenService:Create(TextContainer, TweenInfo.new(0.45, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, TextboxActual.TextBounds.X + 16, 0, 24)}):Play()
@@ -1474,8 +1442,6 @@ function OrionLib:MakeWindow(WindowConfig)
 				AddConnection(Click.MouseButton1Down, function()
 					TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 6, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 6, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 6)}):Play()
 				end)
-
-				return Textbox
 			end 
 			function ElementFunction:AddColorpicker(ColorpickerConfig)
 				ColorpickerConfig = ColorpickerConfig or {}
@@ -1796,7 +1762,7 @@ end
 function OrionLib:Switch()
 	Orion.Enabled = not Orion.Enabled
 end
-
+		
 function OrionLib:Destroy()
 	Orion:Destroy()
 end
