@@ -106,7 +106,7 @@ function Library:Window(name, game, preset, closebind)
     Switch.Parent = UI
     Switch.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     Switch.BackgroundTransparency = 0.5
-    Switch.Position = UDim2.new(0.2, 0, 0, 0)
+    Switch.Position = UDim2.new(0, 10, 1, -160)
     Switch.Size = UDim2.new(0, 50, 0, 50)
     Switch.Font = Enum.Font.SourceSansBold
     Switch.Text = name
